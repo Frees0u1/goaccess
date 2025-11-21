@@ -1,7 +1,14 @@
-:80
-encode gzip zstd
-root * /usr/share/caddy
-try_files {path} {path}/ /report.html
-file_server
+:80 {
+    encode gzip zstd
+    root * /usr/share/caddy
+    
+    # 启用 Basic Auth 鉴权
+    basicauth /* {
+        # 用户名: loskyer
+        # 密码: da$hboard (hash 值如下) $2a$14$QlvBON8sbW6BiES3Z/tsX.SEgH/FzRt/kaHQs06v1YVz2PWoQIJfq
+        loskyer $2a$14$3MxjNcl7GggLeU/l6sEavuEU.kqFzsNKya10WWXiTwFRdPcSocIb2
+    }
 
-
+    try_files {path} {path}/ /report.html
+    file_server
+}

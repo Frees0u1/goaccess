@@ -4,23 +4,14 @@ services:
   goaccess:
     image: allinurl/goaccess:latest
     container_name: goaccess
-    command: >
-      sh -c "mkdir -p /opt/goaccess/db /var/www/html &&
-        goaccess /logs/reverse-proxy.log
-          --real-time-html
-          --persist --restore
-          --db-path=/opt/goaccess/db
-          --html-report-title='Synology Nginx Real-Time Dashboard'
-          -p /etc/goaccess/goaccess.conf
-          -o /var/www/html/report.html
-          --daemonize
-          --addr=0.0.0.0
-          --port=7890"
+    user: root
+    entrypoint: ["sh", "/startup.sh"]
     volumes:
       - ${GOACCESS_DB_DIR:-./data/db}:/opt/goaccess/db
       - ${GOACCESS_HTML_DIR:-./data/html}:/var/www/html
       - ${NGX_LOG_DIR:-/var/log/nginx}:/logs:ro
       - ./goaccess/goaccess.conf:/etc/goaccess/goaccess.conf:ro
+      - ./goaccess/startup.sh:/startup.sh:ro
     ports:
       - "${WS_PORT:-7890}:7890"
     restart: unless-stopped
@@ -34,5 +25,3 @@ services:
       - ${GOACCESS_HTML_DIR:-./data/html}:/usr/share/caddy
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
     restart: unless-stopped
-
-
