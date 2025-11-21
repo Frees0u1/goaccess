@@ -11,9 +11,7 @@ services:
           --persist --restore
           --db-path=/opt/goaccess/db
           --html-report-title='Synology Nginx Real-Time Dashboard'
-          --time-format=%T
-          --date-format=%d/%b/%Y
-          --log-format='%h - %^[%d:%t %^] \"%r\" %s %b \"%R\" \"%u\" %T %^ %v %U'
+          -p /etc/goaccess/goaccess.conf
           -o /var/www/html/report.html
           --daemonize
           --addr=0.0.0.0
