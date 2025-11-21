@@ -5,20 +5,19 @@ services:
     image: allinurl/goaccess:latest
     container_name: goaccess
     command: >
-      sh -c '
-        mkdir -p /opt/goaccess/db /var/www/html &&
-        touch /logs/reverse-proxy.log &&
+      sh -c "mkdir -p /opt/goaccess/db /var/www/html &&
         goaccess /logs/reverse-proxy.log
           --real-time-html
           --persist --restore
           --db-path=/opt/goaccess/db
-          --html-report-title="Synology Nginx Real-Time Dashboard"
-          -p /etc/goaccess/goaccess.conf
+          --html-report-title='Synology Nginx Real-Time Dashboard'
+          --time-format=%T
+          --date-format=%d/%b/%Y
+          --log-format='%h - %^[%d:%t %^] \"%r\" %s %b \"%R\" \"%u\" %T %^ %v %U'
           -o /var/www/html/report.html
           --daemonize
           --addr=0.0.0.0
-          --port=7890
-      '
+          --port=7890"
     volumes:
       - ${GOACCESS_DB_DIR:-./data/db}:/opt/goaccess/db
       - ${GOACCESS_HTML_DIR:-./data/html}:/var/www/html
