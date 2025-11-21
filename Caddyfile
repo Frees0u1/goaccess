@@ -1,0 +1,7 @@
+:80
+encode gzip zstd
+root * /usr/share/caddy
+try_files {path} {path}/ /report.html
+file_server
+
+
