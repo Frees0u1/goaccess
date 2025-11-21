@@ -7,8 +7,8 @@ services:
     command: >
       sh -c '
         mkdir -p /opt/goaccess/db /var/www/html &&
-        touch /logs/access.log &&
-        goaccess /logs/*.log
+        touch /logs/reverse-proxy.log &&
+        goaccess /logs/reverse-proxy.log
           --real-time-html
           --persist --restore
           --db-path=/opt/goaccess/db
